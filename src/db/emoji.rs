@@ -47,7 +47,8 @@ impl Emoji {
         let rec = sqlx::query!(
             r#"
                 SELECT * FROM emojis WHERE name = $1
-            "#, name
+            "#,
+            name
         )
         .fetch_one(pool)
         .await?;
@@ -102,7 +103,7 @@ impl Emoji {
 
     pub async fn delete(id: i32, pool: &PgPool) -> Result<bool> {
         let mut tx = pool.begin().await?;
-         sqlx::query(
+        sqlx::query(
             r#"
                 DELETE FROM emojis
                 WHERE id = $1

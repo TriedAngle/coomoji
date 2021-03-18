@@ -1,4 +1,4 @@
-use crate::model::{Operation, NewOperation};
+use crate::model::{NewOperation, Operation};
 use anyhow::Result;
 use sqlx::postgres::{PgPool, PgRow};
 use sqlx::Row;
@@ -14,8 +14,8 @@ impl Operation {
                 ORDER BY id
             "#
         )
-            .fetch_all(pool)
-            .await?;
+        .fetch_all(pool)
+        .await?;
 
         for rec in recs {
             items.push(Self {
@@ -34,8 +34,8 @@ impl Operation {
             "#,
             id
         )
-            .fetch_one(pool)
-            .await?;
+        .fetch_one(pool)
+        .await?;
 
         Ok(Self {
             id: rec.id,
@@ -47,10 +47,11 @@ impl Operation {
         let rec = sqlx::query!(
             r#"
                 SELECT * FROM operations WHERE emoji = $1
-            "#, emoji
+            "#,
+            emoji
         )
-            .fetch_one(pool)
-            .await?;
+        .fetch_one(pool)
+        .await?;
 
         Ok(Self {
             id: rec.id,
@@ -66,13 +67,13 @@ impl Operation {
                 RETURNING id, emoji
             "#,
         )
-            .bind(&item.emoji)
-            .map(|row: PgRow| Self {
-                id: row.get(0),
-                emoji: row.get(1),
-            })
-            .fetch_one(&mut tx)
-            .await?;
+        .bind(&item.emoji)
+        .map(|row: PgRow| Self {
+            id: row.get(0),
+            emoji: row.get(1),
+        })
+        .fetch_one(&mut tx)
+        .await?;
 
         tx.commit().await?;
         Ok(created)
@@ -87,14 +88,14 @@ impl Operation {
                 RETURNING id, emoji
             "#,
         )
-            .bind(&item.emoji)
-            .bind(id)
-            .map(|row: PgRow| Self {
-                id: row.get(0),
-                emoji: row.get(1),
-            })
-            .fetch_one(&mut tx)
-            .await?;
+        .bind(&item.emoji)
+        .bind(id)
+        .map(|row: PgRow| Self {
+            id: row.get(0),
+            emoji: row.get(1),
+        })
+        .fetch_one(&mut tx)
+        .await?;
 
         tx.commit().await?;
         Ok(updated)
@@ -108,9 +109,9 @@ impl Operation {
                 WHERE id = $1
             "#,
         )
-            .bind(id)
-            .execute(&mut tx)
-            .await?;
+        .bind(id)
+        .execute(&mut tx)
+        .await?;
 
         tx.commit().await?;
         Ok(true)

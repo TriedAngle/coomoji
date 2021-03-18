@@ -29,7 +29,6 @@ pub struct Food {
     pub name: String,
     pub emoji: i32,
     pub description: Option<String>,
-
 }
 
 #[derive(Serialize, Deserialize, FromRow)]

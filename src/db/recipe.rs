@@ -1,4 +1,4 @@
-use crate::model::{Recipe, NewRecipe};
+use crate::model::{NewRecipe, Recipe};
 use anyhow::Result;
 use sqlx::postgres::{PgPool, PgRow};
 use sqlx::Row;
@@ -14,15 +14,15 @@ impl Recipe {
                 ORDER BY id
             "#
         )
-            .fetch_all(pool)
-            .await?;
+        .fetch_all(pool)
+        .await?;
 
         for rec in recs {
             items.push(Self {
                 id: rec.id,
                 operation: rec.operation,
                 outcome: rec.outcome,
-                components: rec.components
+                components: rec.components,
             });
         }
 
@@ -36,14 +36,14 @@ impl Recipe {
             "#,
             id
         )
-            .fetch_one(pool)
-            .await?;
+        .fetch_one(pool)
+        .await?;
 
         Ok(Self {
             id: rec.id,
             operation: rec.operation,
             outcome: rec.outcome,
-            components: rec.components
+            components: rec.components,
         })
     }
 
@@ -51,16 +51,17 @@ impl Recipe {
         let rec = sqlx::query!(
             r#"
                 SELECT * FROM recipes WHERE operation = $1
-            "#, operation
+            "#,
+            operation
         )
-            .fetch_one(pool)
-            .await?;
+        .fetch_one(pool)
+        .await?;
 
         Ok(Self {
             id: rec.id,
             operation: rec.operation,
             outcome: rec.outcome,
-            components: rec.components
+            components: rec.components,
         })
     }
 
@@ -68,16 +69,17 @@ impl Recipe {
         let rec = sqlx::query!(
             r#"
                 SELECT * FROM recipes WHERE outcome = $1
-            "#, outcome
+            "#,
+            outcome
         )
-            .fetch_one(pool)
-            .await?;
+        .fetch_one(pool)
+        .await?;
 
         Ok(Self {
             id: rec.id,
             operation: rec.operation,
             outcome: rec.outcome,
-            components: rec.components
+            components: rec.components,
         })
     }
 
@@ -85,16 +87,17 @@ impl Recipe {
         let rec = sqlx::query!(
             r#"
                 SELECT * FROM recipes WHERE components @> $1
-            "#, components
+            "#,
+            components
         )
-            .fetch_one(pool)
-            .await?;
+        .fetch_one(pool)
+        .await?;
 
         Ok(Self {
             id: rec.id,
             operation: rec.operation,
             outcome: rec.outcome,
-            components: rec.components
+            components: rec.components,
         })
     }
 
@@ -106,17 +109,17 @@ impl Recipe {
                 RETURNING id, name, description, emoji
             "#,
         )
-            .bind(&item.operation)
-            .bind(&item.outcome)
-            .bind(&item.components)
-            .map(|row: PgRow| Self {
-                id: row.get(0),
-                operation: row.get(1),
-                outcome: row.get(2),
-                components: row.get(3)
-            })
-            .fetch_one(&mut tx)
-            .await?;
+        .bind(&item.operation)
+        .bind(&item.outcome)
+        .bind(&item.components)
+        .map(|row: PgRow| Self {
+            id: row.get(0),
+            operation: row.get(1),
+            outcome: row.get(2),
+            components: row.get(3),
+        })
+        .fetch_one(&mut tx)
+        .await?;
 
         tx.commit().await?;
         Ok(created)
@@ -131,18 +134,18 @@ impl Recipe {
                 RETURNING id, operation, outcome, components
             "#,
         )
-            .bind(&item.operation)
-            .bind(&item.outcome)
-            .bind(&item.components)
-            .bind(id)
-            .map(|row: PgRow| Self {
-                id: row.get(0),
-                operation: row.get(1),
-                outcome: row.get(2),
-                components: row.get(3)
-            })
-            .fetch_one(&mut tx)
-            .await?;
+        .bind(&item.operation)
+        .bind(&item.outcome)
+        .bind(&item.components)
+        .bind(id)
+        .map(|row: PgRow| Self {
+            id: row.get(0),
+            operation: row.get(1),
+            outcome: row.get(2),
+            components: row.get(3),
+        })
+        .fetch_one(&mut tx)
+        .await?;
 
         tx.commit().await?;
         Ok(updated)
@@ -156,9 +159,9 @@ impl Recipe {
                 WHERE id = $1
             "#,
         )
-            .bind(id)
-            .execute(&mut tx)
-            .await?;
+        .bind(id)
+        .execute(&mut tx)
+        .await?;
 
         tx.commit().await?;
         Ok(true)

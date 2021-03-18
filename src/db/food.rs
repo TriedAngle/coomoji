@@ -14,15 +14,15 @@ impl Food {
                 ORDER BY id
             "#
         )
-            .fetch_all(pool)
-            .await?;
+        .fetch_all(pool)
+        .await?;
 
         for rec in recs {
             items.push(Self {
                 id: rec.id,
                 name: rec.name,
                 description: rec.description,
-                emoji: rec.emoji
+                emoji: rec.emoji,
             });
         }
 
@@ -36,8 +36,8 @@ impl Food {
             "#,
             id
         )
-            .fetch_one(pool)
-            .await?;
+        .fetch_one(pool)
+        .await?;
 
         Ok(Self {
             id: rec.id,
@@ -51,10 +51,11 @@ impl Food {
         let rec = sqlx::query!(
             r#"
                 SELECT * FROM foods WHERE name = $1
-            "#, name
+            "#,
+            name
         )
-            .fetch_one(pool)
-            .await?;
+        .fetch_one(pool)
+        .await?;
 
         Ok(Self {
             id: rec.id,
@@ -72,17 +73,17 @@ impl Food {
                 RETURNING id, name, description, emoji
             "#,
         )
-            .bind(&item.name)
-            .bind(&item.emoji)
-            .bind(&item.description)
-            .map(|row: PgRow| Self {
-                id: row.get(0),
-                name: row.get(1),
-                emoji: row.get(2),
-                description: row.get(3),
-            })
-            .fetch_one(&mut tx)
-            .await?;
+        .bind(&item.name)
+        .bind(&item.emoji)
+        .bind(&item.description)
+        .map(|row: PgRow| Self {
+            id: row.get(0),
+            name: row.get(1),
+            emoji: row.get(2),
+            description: row.get(3),
+        })
+        .fetch_one(&mut tx)
+        .await?;
 
         tx.commit().await?;
         Ok(created)
@@ -97,18 +98,18 @@ impl Food {
                 RETURNING id, name, description, emoji
             "#,
         )
-            .bind(&item.name)
-            .bind(&item.emoji)
-            .bind(&item.description)
-            .bind(id)
-            .map(|row: PgRow| Self {
-                id: row.get(0),
-                name: row.get(1),
-                emoji: row.get(2),
-                description: row.get(3),
-            })
-            .fetch_one(&mut tx)
-            .await?;
+        .bind(&item.name)
+        .bind(&item.emoji)
+        .bind(&item.description)
+        .bind(id)
+        .map(|row: PgRow| Self {
+            id: row.get(0),
+            name: row.get(1),
+            emoji: row.get(2),
+            description: row.get(3),
+        })
+        .fetch_one(&mut tx)
+        .await?;
 
         tx.commit().await?;
         Ok(updated)
@@ -122,9 +123,9 @@ impl Food {
                 WHERE id = $1
             "#,
         )
-            .bind(id)
-            .execute(&mut tx)
-            .await?;
+        .bind(id)
+        .execute(&mut tx)
+        .await?;
 
         tx.commit().await?;
         Ok(true)
