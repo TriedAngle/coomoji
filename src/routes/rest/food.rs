@@ -24,30 +24,46 @@ pub async fn all(pool: web::Data<PgPool>, request: HttpRequest) -> Result<HttpRe
 }
 
 #[get("/api/foods/{id}")]
-pub async fn by_id(pool: web::Data<PgPool>, web::Path(id): web::Path<i32>) -> Result<HttpResponse, Error> {
+pub async fn by_id(
+    pool: web::Data<PgPool>,
+    web::Path(id): web::Path<i32>,
+) -> Result<HttpResponse, Error> {
     let item = Food::by_id(id, &pool).await.unwrap();
     Ok(HttpResponse::Ok().json(item))
 }
 
 #[get("/api/foods/by-name/{name}")]
-pub async fn by_name(pool: web::Data<PgPool>, web::Path(name): web::Path<String>) -> Result<HttpResponse, Error> {
+pub async fn by_name(
+    pool: web::Data<PgPool>,
+    web::Path(name): web::Path<String>,
+) -> Result<HttpResponse, Error> {
     let item = Food::by_name(name, &pool).await.unwrap();
     Ok(HttpResponse::Ok().json(item))
 }
 
 #[post("/api/foods")]
-pub async fn new(pool: web::Data<PgPool>, web::Json(item): web::Json<NewFood>) -> Result<HttpResponse, Error> {
+pub async fn new(
+    pool: web::Data<PgPool>,
+    web::Json(item): web::Json<NewFood>,
+) -> Result<HttpResponse, Error> {
     let item = Food::create(item, &pool).await.unwrap();
     Ok(HttpResponse::Ok().json(item))
 }
 
 #[patch("/api/foods/{id}")]
-pub async fn update(pool: web::Data<PgPool>, web::Path(id): web::Path<i32>, web::Json(item): web::Json<NewFood>) -> Result<HttpResponse, Error> {
+pub async fn update(
+    pool: web::Data<PgPool>,
+    web::Path(id): web::Path<i32>,
+    web::Json(item): web::Json<NewFood>,
+) -> Result<HttpResponse, Error> {
     let item = Food::update(id, item, &pool).await.unwrap();
     Ok(HttpResponse::Ok().json(item))
 }
 #[delete("/api/foods/{id}")]
-pub async fn delete(pool: web::Data<PgPool>, web::Path(id): web::Path<i32>,) -> Result<HttpResponse, Error> {
+pub async fn delete(
+    pool: web::Data<PgPool>,
+    web::Path(id): web::Path<i32>,
+) -> Result<HttpResponse, Error> {
     let item = Food::delete(id, &pool).await.unwrap();
     Ok(HttpResponse::Ok().json(item))
 }

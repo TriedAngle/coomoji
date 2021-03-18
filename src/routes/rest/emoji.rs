@@ -23,24 +23,37 @@ pub async fn all(pool: web::Data<PgPool>, request: HttpRequest) -> Result<HttpRe
 }
 
 #[get("/api/emojis/{id}")]
-pub async fn by_id(pool: web::Data<PgPool>, web::Path(id): web::Path<i32>) -> Result<HttpResponse, Error> {
+pub async fn by_id(
+    pool: web::Data<PgPool>,
+    web::Path(id): web::Path<i32>,
+) -> Result<HttpResponse, Error> {
     let item = Emoji::by_id(id, &pool).await.unwrap();
     Ok(HttpResponse::Ok().json(item))
 }
 
 #[post("/api/emojis")]
-pub async fn new(pool: web::Data<PgPool>, web::Json(item): web::Json<NewEmoji>) -> Result<HttpResponse, Error> {
+pub async fn new(
+    pool: web::Data<PgPool>,
+    web::Json(item): web::Json<NewEmoji>,
+) -> Result<HttpResponse, Error> {
     let item = Emoji::create(item, &pool).await.unwrap();
     Ok(HttpResponse::Ok().json(item))
 }
 
 #[patch("/api/emojis/{id}")]
-pub async fn update(pool: web::Data<PgPool>, web::Path(id): web::Path<i32>, web::Json(item): web::Json<NewEmoji>) -> Result<HttpResponse, Error> {
+pub async fn update(
+    pool: web::Data<PgPool>,
+    web::Path(id): web::Path<i32>,
+    web::Json(item): web::Json<NewEmoji>,
+) -> Result<HttpResponse, Error> {
     let item = Emoji::update(id, item, &pool).await.unwrap();
     Ok(HttpResponse::Ok().json(item))
 }
 #[delete("/api/emojis/{id}")]
-pub async fn delete(pool: web::Data<PgPool>, web::Path(id): web::Path<i32>,) -> Result<HttpResponse, Error> {
+pub async fn delete(
+    pool: web::Data<PgPool>,
+    web::Path(id): web::Path<i32>,
+) -> Result<HttpResponse, Error> {
     let item = Emoji::delete(id, &pool).await.unwrap();
     Ok(HttpResponse::Ok().json(item))
 }

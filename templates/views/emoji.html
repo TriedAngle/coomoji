@@ -1,0 +1,26 @@
+{% extends "base/default.html" %}
+{% block title %} {{title}} {% endblock title %}
+
+{% block head %}
+{{ super() }}
+{% endblock head %}
+
+{% block content %}
+<h1>Emoji</h1>
+
+<table class="table">
+  <thead>
+    <th scope="col">#</th>
+    <th scope="col">name</th>
+  </thead>
+  <tbody>
+  {% for emoji in emojis %}
+    <tr>
+      <th scope="row">{{emoji.id}}</th>
+      <td>{{emoji.name}}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% endblock content %}

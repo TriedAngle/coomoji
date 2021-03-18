@@ -11,6 +11,7 @@ use actix_web::{web, App, HttpRequest, HttpServer, Responder};
 use anyhow::Result;
 use listenfd::ListenFd;
 use sqlx::{PgPool, Postgres};
+use tera::Tera;
 
 #[actix_web::main]
 async fn main() -> Result<()> {
@@ -18,10 +19,14 @@ async fn main() -> Result<()> {
     let mut listenfd = ListenFd::from_env();
 
     let pool = PgPool::new(&config.db_address).await?;
+
     let mut server = HttpServer::new(move || {
+        let tera = Tera::new(concat!(env!("CARGO_MANIFEST_DIR"), "/templates/**/*")).unwrap();
+
         App::new()
-            .wrap(Cors::permissive().max_age(3600))
             .data(pool.clone())
+            .data(tera)
+            .wrap(Cors::permissive().max_age(3600))
             .configure(routes::endpoints)
     });
 

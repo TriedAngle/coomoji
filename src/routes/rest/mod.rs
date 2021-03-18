@@ -1,8 +1,8 @@
 use actix_web::web::ServiceConfig;
 
 mod emoji;
-mod operation;
 mod food;
+mod operation;
 mod recipe;
 
 pub fn endpoints(config: &mut ServiceConfig) {
