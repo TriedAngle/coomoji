@@ -5,9 +5,9 @@ authors = ["Sebastian <Sebastian@Strobl.net>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
+# TODO: when cors supports actix 4 update axtix_web to 4 and sqlx to ^5
 [dependencies]
-actix-web = "3.2"
+actix-web = "3.3.2"
 actix-cors = "0.5.4"
 listenfd = "0.3.3"
 tera = "1.7.0"
