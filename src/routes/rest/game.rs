@@ -30,9 +30,7 @@ pub async fn by_channel(
     pool: web::Data<PgPool>,
     web::Path(id): web::Path<String>,
 ) -> Result<HttpResponse, Error> {
-    let game = Game::by_channel_id(id, &pool)
-        .await
-        .unwrap();
+    let game = Game::by_channel_id(id, &pool).await.unwrap();
     Ok(HttpResponse::Ok().json(game))
 }
 

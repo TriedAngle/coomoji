@@ -129,7 +129,7 @@ impl Recipe {
         let created = sqlx::query(
             r#"
                 INSERT INTO recipes (operation, outcome, components) VALUES ($1, $2, $3)
-                RETURNING id, name, description, emoji
+                RETURNING id, operation, outcome, components
             "#,
         )
         .bind(&item.operation)

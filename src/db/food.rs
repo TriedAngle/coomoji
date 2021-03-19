@@ -70,7 +70,7 @@ impl Food {
         let created = sqlx::query(
             r#"
                 INSERT INTO foods (name, emoji, description) VALUES ($1, $2, $3)
-                RETURNING id, name, description, emoji
+                RETURNING id, name, emoji, description
             "#,
         )
         .bind(&item.name)
@@ -95,7 +95,7 @@ impl Food {
             r#"
                 UPDATE foods SET name = $1, emoji = $2, description = $3
                 WHERE id = $4
-                RETURNING id, name, description, emoji
+                RETURNING id, name, emoji, description
             "#,
         )
         .bind(&item.name)

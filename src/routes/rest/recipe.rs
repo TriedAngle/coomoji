@@ -10,6 +10,7 @@ pub fn endpoints(config: &mut ServiceConfig) {
         .service(by_operation)
         .service(by_outcome)
         .service(by_components)
+        .service(by_operation_components)
         .service(new)
         .service(update)
         .service(delete);
@@ -39,8 +40,8 @@ pub async fn by_operation(
     pool: web::Data<PgPool>,
     web::Path(id): web::Path<i32>,
 ) -> Result<HttpResponse, Error> {
-    let item = Recipe::by_operation(id, &pool).await.unwrap();
-    Ok(HttpResponse::Ok().json(item))
+    let items = Recipe::by_operation(id, &pool).await.unwrap();
+    Ok(HttpResponse::Ok().json(items))
 }
 
 #[get("/api/recipes/by-outcome/{id}")]
@@ -48,8 +49,20 @@ pub async fn by_outcome(
     pool: web::Data<PgPool>,
     web::Path(id): web::Path<i32>,
 ) -> Result<HttpResponse, Error> {
-    let item = Recipe::by_outcome(id, &pool).await.unwrap();
-    Ok(HttpResponse::Ok().json(item))
+    let items = Recipe::by_outcome(id, &pool).await.unwrap();
+    Ok(HttpResponse::Ok().json(items))
+}
+
+#[get("/api/recipes/by-outcome-components/{id}")]
+pub async fn by_operation_components(
+    pool: web::Data<PgPool>,
+    web::Path(id): web::Path<i32>,
+    web::Json(components): web::Json<Vec<i32>>,
+) -> Result<HttpResponse, Error> {
+    let items = Recipe::by_components_and_operation(id, &components, &pool)
+        .await
+        .unwrap();
+    Ok(HttpResponse::Ok().json(items))
 }
 
 #[get("/api/recipes/by-components")]
@@ -57,8 +70,8 @@ pub async fn by_components(
     pool: web::Data<PgPool>,
     web::Json(components): web::Json<Vec<i32>>,
 ) -> Result<HttpResponse, Error> {
-    let item = Recipe::by_components(&components, &pool).await.unwrap();
-    Ok(HttpResponse::Ok().json(item))
+    let items = Recipe::by_components(&components, &pool).await.unwrap();
+    Ok(HttpResponse::Ok().json(items))
 }
 
 #[post("/api/recipes")]

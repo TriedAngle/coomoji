@@ -1,4 +1,4 @@
-use crate::model::{Story, NewStory};
+use crate::model::{NewStory, Story};
 use actix_web::web::ServiceConfig;
 use actix_web::{delete, get, patch, post, web, Error, HttpRequest, HttpResponse, Responder};
 use sqlx::PgPool;

@@ -4,7 +4,7 @@ use actix_web::{delete, get, patch, post, web, Error, HttpRequest, HttpResponse,
 use sqlx::PgPool;
 
 pub fn endpoints(config: &mut ServiceConfig) {
-    config.service(all).service(get_or_create);
+    config.service(all).service(get).service(get_or_create);
 }
 
 #[get("/api/players")]
@@ -17,7 +17,16 @@ pub async fn all(pool: web::Data<PgPool>, request: HttpRequest) -> Result<HttpRe
     }
 }
 
-#[get("/api/players/{discord_id}")]
+#[get("/api/players/{id}")]
+pub async fn get(
+    pool: web::Data<PgPool>,
+    web::Path(id): web::Path<i32>,
+) -> Result<HttpResponse, Error> {
+    let player = Player::by_id(id.clone(), &pool).await.unwrap();
+    Ok(HttpResponse::Ok().json(player))
+}
+
+#[get("/api/players/gc/{id}")]
 pub async fn get_or_create(
     pool: web::Data<PgPool>,
     web::Path(id): web::Path<String>,

@@ -1,4 +1,4 @@
-use crate::model::{Story, NewStory};
+use crate::model::{NewStory, Story};
 use anyhow::Result;
 use sqlx::postgres::{PgPool, PgRow};
 use sqlx::Row;
@@ -15,8 +15,8 @@ impl Story {
                 ORDER BY id
             "#
         )
-            .fetch_all(pool)
-            .await?;
+        .fetch_all(pool)
+        .await?;
 
         for rec in recs {
             items.push(Self {
@@ -25,7 +25,7 @@ impl Story {
                 description: rec.description,
                 story: rec.story,
                 items: rec.items,
-                recipes: rec.recipes
+                recipes: rec.recipes,
             });
         }
 
@@ -39,8 +39,8 @@ impl Story {
             "#,
             id
         )
-            .fetch_one(pool)
-            .await?;
+        .fetch_one(pool)
+        .await?;
 
         Ok(Self {
             id: rec.id,
@@ -48,7 +48,7 @@ impl Story {
             description: rec.description,
             story: rec.story,
             items: rec.items,
-            recipes: rec.recipes
+            recipes: rec.recipes,
         })
     }
 
@@ -59,8 +59,8 @@ impl Story {
             "#,
             title
         )
-            .fetch_one(pool)
-            .await?;
+        .fetch_one(pool)
+        .await?;
 
         Ok(Self {
             id: rec.id,
@@ -68,7 +68,7 @@ impl Story {
             description: rec.description,
             story: rec.story,
             items: rec.items,
-            recipes: rec.recipes
+            recipes: rec.recipes,
         })
     }
 
@@ -109,22 +109,22 @@ impl Story {
                 RETURNING id, channel_id, players, player_inventories, inventory
             "#,
         )
-            .bind(story.title)
-            .bind(story.description)
-            .bind(story.story)
-            .bind(story.items)
-            .bind(story.recipes)
-            .bind(id)
-            .map(|row: PgRow| Self {
-                id: row.get(0),
-                title: row.get(1),
-                description: row.get(2),
-                story: row.get(3),
-                items: row.get(4),
-                recipes: row.get(5)
-            })
-            .fetch_one(&mut tx)
-            .await?;
+        .bind(story.title)
+        .bind(story.description)
+        .bind(story.story)
+        .bind(story.items)
+        .bind(story.recipes)
+        .bind(id)
+        .map(|row: PgRow| Self {
+            id: row.get(0),
+            title: row.get(1),
+            description: row.get(2),
+            story: row.get(3),
+            items: row.get(4),
+            recipes: row.get(5),
+        })
+        .fetch_one(&mut tx)
+        .await?;
 
         tx.commit().await?;
         Ok(updated)
@@ -138,9 +138,9 @@ impl Story {
                 WHERE id = $1
             "#,
         )
-            .bind(id)
-            .execute(&mut tx)
-            .await?;
+        .bind(id)
+        .execute(&mut tx)
+        .await?;
 
         tx.commit().await?;
         Ok(true)

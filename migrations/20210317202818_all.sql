@@ -9,7 +9,7 @@ CREATE TABLE emojis
 
 CREATE TABLE operations
 (
-    id              INT         NOT NULL,
+    id              SERIAL       NOT NULL,
     emoji           INT         NOT NULL,
     description     TEXT,
     PRIMARY KEY (id),
@@ -20,7 +20,7 @@ CREATE TABLE operations
 
 CREATE TABLE foods
 (
-    id              INT         NOT NULL,
+    id              SERIAL      NOT NULL,
     name            VARCHAR(60) NOT NULL,
     emoji           INT         NOT NULL,
     description     TEXT,
@@ -33,7 +33,7 @@ CREATE TABLE foods
 
 CREATE TABLE recipes
 (
-    id              INT         NOT NULL,
+    id              SERIAL      NOT NULL,
     operation       INT         NOT NULL,
     outcome         INT         NOT NULL,
     components      INT[]       NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE recipes
 
 CREATE TABLE players
 (
-    id              INT         NOT NULL,
+    id              SERIAL      NOT NULL,
     discord_id      TEXT        NOT NULL,
     PRIMARY KEY (id)
 );
@@ -80,7 +80,7 @@ CREATE TABLE player_inventories
 
 CREATE TABLE stories
 (
-    id              INT        NOT NULL,
+    id              SERIAL      NOT NULL,
     title           TEXT        NOT NULL,
     description     TEXT        NOT NULL,
     story           TEXT        NOT NULL,

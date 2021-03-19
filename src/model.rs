@@ -35,8 +35,8 @@ pub struct Food {
 #[derive(Serialize, Deserialize, FromRow)]
 pub struct NewFood {
     pub name: String,
-    pub description: Option<String>,
     pub emoji: i32,
+    pub description: Option<String>,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -49,7 +49,6 @@ pub struct Recipe {
 
 #[derive(Serialize, Deserialize, FromRow)]
 pub struct NewRecipe {
-    pub id: i32,
     pub operation: i32,
     pub outcome: i32,
     pub components: Vec<i32>,
@@ -99,7 +98,6 @@ pub struct NewStory {
     pub items: Vec<i32>,
     pub recipes: Vec<i32>,
 }
-
 
 #[derive(Serialize, Deserialize)]
 pub struct PlayerInventory {
