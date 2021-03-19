@@ -12,12 +12,14 @@
   <thead>
     <th scope="col">#</th>
     <th scope="col">name</th>
+    <th scope="col">utf8</th>
   </thead>
   <tbody>
   {% for emoji in emojis %}
     <tr>
       <th scope="row">{{emoji.id}}</th>
       <td>{{emoji.name}}</td>
+      <td>{{emoji.uf8}}</td>
     </tr>
   {% endfor %}
   </tbody>

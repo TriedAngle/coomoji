@@ -6,11 +6,13 @@ use sqlx::FromRow;
 pub struct Emoji {
     pub id: i32,
     pub name: String,
+    pub utf8: String,
 }
 
 #[derive(Serialize, Deserialize, FromRow)]
 pub struct NewEmoji {
     pub name: String,
+    pub utf8: String,
 }
 
 #[derive(Serialize, Deserialize)]

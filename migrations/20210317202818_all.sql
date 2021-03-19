@@ -3,6 +3,7 @@ CREATE TABLE emojis
 (
     id              SERIAL      NOT NULL,
     name            VARCHAR(40) NOT NULL,
+    utf8            VARCHAR(10) NOT NULL,
     PRIMARY KEY (id)
 );
 

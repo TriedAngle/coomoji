@@ -9,7 +9,7 @@ impl Emoji {
 
         let recs = sqlx::query!(
             r#"
-                SELECT id, name
+                SELECT id, name, utf8
                     FROM emojis
                 ORDER BY id
             "#
@@ -21,6 +21,7 @@ impl Emoji {
             items.push(Self {
                 id: rec.id,
                 name: rec.name,
+                utf8: rec.utf8,
             });
         }
 
@@ -40,6 +41,7 @@ impl Emoji {
         Ok(Self {
             id: rec.id,
             name: rec.name,
+            utf8: rec.utf8,
         })
     }
 
@@ -56,6 +58,7 @@ impl Emoji {
         Ok(Self {
             id: rec.id,
             name: rec.name,
+            utf8: rec.utf8,
         })
     }
 
@@ -63,14 +66,16 @@ impl Emoji {
         let mut tx = pool.begin().await?;
         let created = sqlx::query(
             r#"
-                INSERT INTO emojis (name) VALUES ($1)
-                RETURNING id, name
+                INSERT INTO emojis (name, utf8) VALUES ($1, $2)
+                RETURNING id, name, utf8
             "#,
         )
         .bind(&item.name)
+            .bind(&item.utf8)
         .map(|row: PgRow| Self {
             id: row.get(0),
             name: row.get(1),
+            utf8: row.get(2)
         })
         .fetch_one(&mut tx)
         .await?;
@@ -83,16 +88,18 @@ impl Emoji {
         let mut tx = pool.begin().await?;
         let updated = sqlx::query(
             r#"
-                UPDATE emojis SET name = $1
-                WHERE id = $2
+                UPDATE emojis SET name = $1, utf8 = $2
+                WHERE id = $3
                 RETURNING id, name
             "#,
         )
         .bind(&item.name)
+            .bind(&item.utf8)
         .bind(id)
         .map(|row: PgRow| Self {
             id: row.get(0),
             name: row.get(1),
+            utf8: row.get(2)
         })
         .fetch_one(&mut tx)
         .await?;
