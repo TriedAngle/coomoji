@@ -25,12 +25,12 @@ pub async fn all(pool: web::Data<PgPool>, request: HttpRequest) -> Result<HttpRe
     }
 }
 
-#[get("/api/games/by-channel/{}")]
+#[get("/api/games/by-channel/{id}")]
 pub async fn by_channel(
     pool: web::Data<PgPool>,
-    web::Json(new_game): web::Json<NewGame>,
+    web::Path(id): web::Path<String>,
 ) -> Result<HttpResponse, Error> {
-    let game = Game::by_channel_id(new_game.channel_id.clone(), &pool)
+    let game = Game::by_channel_id(id, &pool)
         .await
         .unwrap();
     Ok(HttpResponse::Ok().json(game))

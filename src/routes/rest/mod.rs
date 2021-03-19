@@ -11,9 +11,13 @@ mod recipe;
 mod story;
 
 pub fn endpoints(config: &mut ServiceConfig) {
+    crafting::endpoints(config);
     emoji::endpoints(config);
-    operation::endpoints(config);
     food::endpoints(config);
-    recipe::endpoints(config);
+    game::endpoints(config);
     helper::endpoints(config);
+    operation::endpoints(config);
+    player::endpoints(config);
+    recipe::endpoints(config);
+    story::endpoints(config);
 }

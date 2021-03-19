@@ -76,4 +76,15 @@ CREATE TABLE player_inventories
     CONSTRAINT "fk_game" FOREIGN KEY (game)
         REFERENCES games (id)
         ON DELETE CASCADE
+);
+
+CREATE TABLE stories
+(
+    id              INT        NOT NULL,
+    title           TEXT        NOT NULL,
+    description     TEXT        NOT NULL,
+    story           TEXT        NOT NULL,
+    items           INT[]       NOT NULL,
+    recipes         INT[]       NOT NULL,
+    PRIMARY KEY (id)
 )

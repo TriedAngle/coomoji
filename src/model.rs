@@ -75,20 +75,31 @@ pub struct Game {
     pub inventory: Vec<i32>,
 }
 
+#[derive(Serialize, Deserialize, FromRow)]
+pub struct NewGame {
+    pub channel_id: String,
+    pub inventory: Vec<i32>,
+}
+
 #[derive(Serialize, Deserialize)]
 pub struct Story {
     pub id: i32,
     pub title: String,
     pub description: String,
+    pub story: String,
     pub items: Vec<i32>,
     pub recipes: Vec<i32>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct NewGame {
-    pub channel_id: String,
-    pub inventory: Vec<i32>,
+#[derive(Serialize, Deserialize, FromRow)]
+pub struct NewStory {
+    pub title: String,
+    pub description: String,
+    pub story: String,
+    pub items: Vec<i32>,
+    pub recipes: Vec<i32>,
 }
+
 
 #[derive(Serialize, Deserialize)]
 pub struct PlayerInventory {
