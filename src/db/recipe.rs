@@ -101,6 +101,29 @@ impl Recipe {
         })
     }
 
+    pub async fn by_components_and_operation(
+        operation: i32,
+        components: &[i32],
+        pool: &PgPool,
+    ) -> Result<Self> {
+        let rec = sqlx::query!(
+            r#"
+                SELECT * FROM recipes WHERE components @> $1 AND operation = $2
+            "#,
+            components,
+            operation
+        )
+        .fetch_one(pool)
+        .await?;
+
+        Ok(Self {
+            id: rec.id,
+            operation: rec.operation,
+            outcome: rec.outcome,
+            components: rec.components,
+        })
+    }
+
     pub async fn create(item: NewRecipe, pool: &PgPool) -> Result<Self> {
         let mut tx = pool.begin().await?;
         let created = sqlx::query(

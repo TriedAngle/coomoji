@@ -7,6 +7,7 @@ pub fn endpoints(config: &mut ServiceConfig) {
     config
         .service(all)
         .service(by_id)
+        .service(by_name)
         .service(new)
         .service(update)
         .service(delete);
@@ -28,6 +29,15 @@ pub async fn by_id(
     web::Path(id): web::Path<i32>,
 ) -> Result<HttpResponse, Error> {
     let item = Emoji::by_id(id, &pool).await.unwrap();
+    Ok(HttpResponse::Ok().json(item))
+}
+
+#[get("/api/emojis/by-name/{name}")]
+pub async fn by_name(
+    pool: web::Data<PgPool>,
+    web::Path(name): web::Path<String>,
+) -> Result<HttpResponse, Error> {
+    let item = Emoji::by_name(name, &pool).await.unwrap();
     Ok(HttpResponse::Ok().json(item))
 }
 
