@@ -154,7 +154,7 @@ impl Game {
         Ok(updated)
     }
 
-    pub async fn delete(id: i32, pool: &PgPool) -> Result<bool> {
+    pub async fn delete(id: Uuid, pool: &PgPool) -> Result<bool> {
         let mut tx = pool.begin().await?;
         sqlx::query(
             r#"

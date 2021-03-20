@@ -163,3 +163,12 @@ pub async fn leave(
         .unwrap();
     Ok(HttpResponse::Ok().json(game))
 }
+
+#[delete("/api/games/{id}}")]
+pub async fn stop(
+    pool: web::Data<PgPool>,
+    web::Path(id): web::Path<Uuid>,
+) -> Result<HttpResponse, Error> {
+    let mut result = Game::delete(id, &pool).await.unwrap();
+    Ok(HttpResponse::Ok().json(result))
+}
