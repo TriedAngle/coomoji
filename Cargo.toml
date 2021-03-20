@@ -20,3 +20,4 @@ dotenv = "0.15.0"
 futures = "0.3.13"
 uuid = {version = "0.8.2", features = ["serde", "v4"] }
 names = "0.11.0"
+rand = "0.8.3"

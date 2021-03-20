@@ -1,6 +1,7 @@
 use crate::model::{NewStory, Story};
 use actix_web::web::ServiceConfig;
 use actix_web::{delete, get, patch, post, web, Error, HttpRequest, HttpResponse, Responder};
+use rand::Rng;
 use sqlx::PgPool;
 
 pub fn endpoints(config: &mut ServiceConfig) {
@@ -18,6 +19,18 @@ pub async fn all(pool: web::Data<PgPool>, request: HttpRequest) -> Result<HttpRe
     if request.query_string().is_empty() {
         let items = Story::all(&pool).await.unwrap();
         Ok(HttpResponse::Ok().json(items))
+    } else {
+        unimplemented!()
+    }
+}
+
+#[get("/api/stories/random")]
+pub async fn random(pool: web::Data<PgPool>, request: HttpRequest) -> Result<HttpResponse, Error> {
+    if request.query_string().is_empty() {
+        let items = Story::all(&pool).await.unwrap();
+        let rand = rand::thread_rng().gen_range(0..items.len() - 1);
+        let story = items[rand].clone();
+        Ok(HttpResponse::Ok().json(story))
     } else {
         unimplemented!()
     }
