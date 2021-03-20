@@ -71,11 +71,11 @@ impl Emoji {
             "#,
         )
         .bind(&item.name)
-            .bind(&item.utf8)
+        .bind(&item.utf8)
         .map(|row: PgRow| Self {
             id: row.get(0),
             name: row.get(1),
-            utf8: row.get(2)
+            utf8: row.get(2),
         })
         .fetch_one(&mut tx)
         .await?;
@@ -90,16 +90,16 @@ impl Emoji {
             r#"
                 UPDATE emojis SET name = $1, utf8 = $2
                 WHERE id = $3
-                RETURNING id, name
+                RETURNING id, name, utf8
             "#,
         )
         .bind(&item.name)
-            .bind(&item.utf8)
+        .bind(&item.utf8)
         .bind(id)
         .map(|row: PgRow| Self {
             id: row.get(0),
             name: row.get(1),
-            utf8: row.get(2)
+            utf8: row.get(2),
         })
         .fetch_one(&mut tx)
         .await?;
