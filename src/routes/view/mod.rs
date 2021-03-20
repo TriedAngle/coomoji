@@ -32,8 +32,8 @@ async fn operations(tmpl: web::Data<Tera>, pool: web::Data<PgPool>) -> Result<Ht
     let items = Operation::all(&pool).await.unwrap();
 
     let mut ctx = tera::Context::new();
-    ctx.insert("title", "Emoji");
-    ctx.insert("emojis", &items);
+    ctx.insert("title", "Operation");
+    ctx.insert("operations", &items);
 
     let body = tmpl
         .render("views/operation.html", &ctx)
@@ -47,8 +47,8 @@ async fn foods(tmpl: web::Data<Tera>, pool: web::Data<PgPool>) -> Result<HttpRes
     let items = Food::all(&pool).await.unwrap();
 
     let mut ctx = tera::Context::new();
-    ctx.insert("title", "Emoji");
-    ctx.insert("emojis", &items);
+    ctx.insert("title", "Food");
+    ctx.insert("foods", &items);
 
     let body = tmpl
         .render("views/food.html", &ctx)
@@ -62,8 +62,8 @@ async fn recipes(tmpl: web::Data<Tera>, pool: web::Data<PgPool>) -> Result<HttpR
     let items = Recipe::all(&pool).await.unwrap();
 
     let mut ctx = tera::Context::new();
-    ctx.insert("title", "Emoji");
-    ctx.insert("emojis", &items);
+    ctx.insert("title", "Recipe");
+    ctx.insert("recipes", &items);
 
     let body = tmpl
         .render("views/recipe.html", &ctx)
